@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Photo of the Day</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_test.css') }}">
+</head>
+<body>
+    <h1>Group 2 Project</h1>
+    <div id="photo-container">
+        <h2>NASA Photo of the Day</h2>
+        <img id="nasa-photo" src="" alt="NASA Photo of the Day" style="max-width: 100%; height: auto;">
+        <p id="photo-title"></p>
+        <p id="photo-description"></p>
+    </div>
+
+    <div id="aurora-container">
+        <h2>Aurora Borealis UK Status</h2>
+        <p id="aurora-status"></p>
+        <p id="aurora-location"></p>
+    </div>
+
+    <div class="chart-container">
+        <h2>Comparing Geomagnetic Storm and Solar Flare Data</h2>
+        <img src="{{ url_for('plot_png') }}" alt="GMS and SF Chart" style="max-width: 100%; height: auto;">
+    </div>
+
+    <script>
+        async function fetchNasaPhoto() {
+            const response = await fetch('/nasa-photo');
+            const data = await response.json();
+
+            document.getElementById('nasa-photo').src = data.url;
+            document.getElementById('photo-title').innerText = data.title;
+            document.getElementById('photo-description').innerText = data.explanation;
+        }
+
+        async function fetchAuroraData() {
+            const response = await fetch('/aurora-watch');
+            const data = await response.json();
+
+            document.getElementById('aurora-status').innerText = data.current_activity;
+            document.getElementById('aurora-location').innerText = data.station;
+        }
+
+        window.onload = function() {
+            fetchNasaPhoto();
+            fetchAuroraData();
+        };
+    </script>
+</body>
+</html>`
